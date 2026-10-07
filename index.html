@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRS Demo | Quản lý hồ sơ</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Bỏ qua đến nội dung chính</a>
+    <header class="app-header">
+      <div>
+        <h1>CRS Demo</h1>
+        <p class="subtitle">Nguyên mẫu quản lý hồ sơ công việc nội bộ</p>
+      </div>
+      <button id="open-create-modal" class="btn btn-primary" type="button">+ Tạo hồ sơ mới</button>
+    </header>
+
+    <main id="main-content" class="layout" tabindex="-1">
+      <section aria-labelledby="dashboard-title" class="panel">
+        <h2 id="dashboard-title">Tổng quan</h2>
+        <div id="summary-cards" class="summary-grid" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="records-title" class="panel">
+        <div class="panel-header">
+          <h2 id="records-title">Danh sách hồ sơ</h2>
+          <div class="filters" role="search" aria-label="Tìm kiếm hồ sơ">
+            <label>
+              <span>Tìm kiếm</span>
+              <input id="search-input" type="search" placeholder="Mã hồ sơ, người tạo, mô tả..." />
+            </label>
+            <label>
+              <span>Trạng thái</span>
+              <select id="status-filter">
+                <option value="all">Tất cả</option>
+              </select>
+            </label>
+            <label>
+              <span>Loại hồ sơ</span>
+              <select id="type-filter">
+                <option value="all">Tất cả</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div id="table-wrapper" class="table-wrapper" aria-live="polite">
+          <table>
+            <caption class="sr-only">Bảng danh sách hồ sơ</caption>
+            <thead>
+              <tr>
+                <th scope="col">Mã</th>
+                <th scope="col">Người phụ trách</th>
+                <th scope="col">Loại</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Ưu tiên</th>
+                <th scope="col">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="records-body"></tbody>
+          </table>
+        </div>
+
+        <div id="empty-state" class="state hidden" role="status">
+          <p>Không có hồ sơ phù hợp với bộ lọc hiện tại.</p>
+        </div>
+      </section>
+
+      <section aria-labelledby="detail-title" class="panel">
+        <h2 id="detail-title">Chi tiết hồ sơ</h2>
+        <div id="detail-content" class="detail-card" role="status">
+          <p>Chọn một hồ sơ để xem chi tiết.</p>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="create-modal">
+      <form id="create-form" method="dialog" novalidate>
+        <h2>Tạo hồ sơ mới</h2>
+        <p class="form-description">Tất cả thông tin được lưu cục bộ trên trình duyệt.</p>
+
+        <label>
+          Tên người phụ trách
+          <input name="assignee" type="text" required maxlength="80" />
+        </label>
+
+        <label>
+          Loại hồ sơ
+          <select name="type" required>
+            <option value="">-- Chọn loại --</option>
+            <option value="Khiếu nại">Khiếu nại</option>
+            <option value="Yêu cầu hỗ trợ">Yêu cầu hỗ trợ</option>
+            <option value="Đề nghị dịch vụ">Đề nghị dịch vụ</option>
+          </select>
+        </label>
+
+        <label>
+          Mức ưu tiên
+          <select name="priority" required>
+            <option value="Thấp">Thấp</option>
+            <option value="Trung bình" selected>Trung bình</option>
+            <option value="Cao">Cao</option>
+          </select>
+        </label>
+
+        <label>
+          Mô tả
+          <textarea name="description" rows="4" required maxlength="500"></textarea>
+        </label>
+
+        <p id="form-error" class="error-message hidden" role="alert">Vui lòng nhập đầy đủ thông tin hợp lệ.</p>
+
+        <div class="modal-actions">
+          <button type="button" class="btn" id="cancel-create">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu hồ sơ</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="loading-overlay" class="overlay" role="status" aria-live="assertive">
+      <p>Đang tải dữ liệu...</p>
+    </div>
+
+    <div id="error-banner" class="error-banner hidden" role="alert">
+      <p>Không thể đọc dữ liệu đã lưu. Bạn có thể đặt lại dữ liệu mẫu.</p>
+      <button id="reset-data" class="btn btn-secondary" type="button">Khôi phục dữ liệu mẫu</button>
+    </div>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
